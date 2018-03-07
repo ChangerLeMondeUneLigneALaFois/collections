@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Freak on 06/03/2018.
  */
-public class ArrayLists<T extends Comparable> implements CollectionImplementation<T> {
+public class ArrayLists<T> implements CollectionImplementation<T> {
 
     private boolean mutable;
 
@@ -23,10 +23,10 @@ public class ArrayLists<T extends Comparable> implements CollectionImplementatio
     }
 
     @Override
-    public Collection<T> add(Comparable element) {
+    public Collection<T> add(T element) {
         ArrayList<T> newClasses = new ArrayList<>();
         newClasses.addAll(backingArrayList);
-        newClasses.add((T)element);
+        newClasses.add(element);
         return new Collection<T>(new ArrayLists<T>(mutable, newClasses));
     }
 
@@ -42,7 +42,29 @@ public class ArrayLists<T extends Comparable> implements CollectionImplementatio
     }
 
     @Override
-    public boolean contains(Comparable element) {
+    @SafeVarargs
+    public final Collection<T> create(T... elements) {
+        backingArrayList = new ArrayList<>();
+        for (T element : elements) {
+            backingArrayList.add(element);
+        }
+        return new Collection<T>(this);
+    }
+
+    @Override
+    public Collection<T> create(java.util.Collection<T> elements) {
+        backingArrayList = new ArrayList<>();
+        backingArrayList.addAll(elements);
+        return new Collection<T>(this);
+    }
+
+    @Override
+    public Integer size() {
+        return backingArrayList.size();
+    }
+
+    @Override
+    public boolean contains(T element) {
         return backingArrayList.contains(element);
     }
 }
