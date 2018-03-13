@@ -1,6 +1,9 @@
 package org.free.software.collections;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 /**
  * Created by Freak on 06/03/2018.
@@ -51,5 +54,9 @@ public class Collection<T> implements CollectionImplementation<T> {
 
     public java.util.Collection<T> asJavaCollection() {
         return implementation.asJavaCollection();
+    }
+
+    public String toJson() {
+        return "{ " + implementation.asJavaCollection().stream().map(Object::toString).collect(Collectors.joining(", ")) + " }";
     }
 }
